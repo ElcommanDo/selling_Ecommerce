@@ -1,0 +1,86 @@
+{%load static%}
+<html>
+    <head>
+        <title> your cart details</title>
+        <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
+
+    <link rel="stylesheet" href=" {% static 'css/bootstrap-datepicker.css' %}">
+
+    <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+
+    <link rel="stylesheet" href=" {% static 'css/style.css' %}">
+    
+
+    </head>
+    <body>
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Delete</th>
+                <th scope="col"> total Price</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+                {%for item in cart%}
+                {%with product=item.product%}
+   
+              <tr>
+                <td scope="row">
+                    <a href="{%url 'product_details' product.id product.slug %}">
+                     <img src="{{product.image1.url}}"width="90">   
+
+                </a>
+            </td>
+                <td>{{product.name}}</td>
+                
+                <td>
+                   <form style="display:inline-block;" method="POST" action="{% url 'cart_add' item.product.id %}">
+                        {%csrf_token%}
+                         {{item.update_quantity_form.quantity}}{{item.update_quantity_form.update}}
+                        <input type="submit" class="btn btn-primary" value="Update">
+
+                </form>
+            </td>
+            <td>{{item.price}}$</td>
+            <td>
+                <a class="btn btn-danger" href="{%url 'cart_delete' item.product.id %}">Delete</a>
+            </td>
+            <td>
+                {{item.total_price}}$
+            </td>
+              </tr>
+              {%endwith%}
+                 {%endfor%}
+                 <tr >
+                     <td colspan="5">
+                            <a class="btn btn-primary" href="{% url 'home' %}">Continue shopping</a>
+                            <a class="btn btn-primary" href="{% url 'create_order' %}">Check out</a>
+                            
+                     
+                        </td>
+                     <td>{{cart.get_total_price}}</td>
+                     
+
+                 </tr>         
+            </tbody>
+          </table>
+          
+    
+    </body>
+</html>
